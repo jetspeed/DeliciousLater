@@ -20,17 +20,20 @@
     return self;
 }
 
-- (NSString *)getBookmarks
+- (NSDictionary *)getBookmarks
 {
     //NSURL *url = [NSURL URLWithString:@"https://jetspeed4:shmimy@api.del.icio.us/v1/posts/recent"];
-    NSURL *url = [NSURL URLWithString:@"http://feeds.delicious.com/v2/json/jetspeed4"];
+    NSURL *url = [NSURL URLWithString:@"http://feeds.delicious.com/v2/json/jetspeed4?count=100"];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];    
     [request startSynchronous];    
     NSError *error = [request error];    
     if (!error) {        
         NSString *response = [request responseString]; 
+        NSDictionary *bookmarkDic = [response objectFromJSONString];
+        int count = [bookmarkDic count];
+        NSLog(@"I fetched %i items", count);
         NSLog(response);
-        return response;
+        return bookmarkDic;
     }
 }
 
